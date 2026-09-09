@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ספר החוקים והנהלים הרשמי — מערך K9</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 20mm 15mm 20mm 15mm;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #1a202c;
+            background-color: #ffffff;
+            line-height: 1.5;
+            margin: 0;
+            padding: 0;
+            direction: rtl;
+        }
+
+        .document-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header & Footer Rules */
+        .page-header {
+            border-bottom: 2px solid #1a365d;
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11pt;
+            color: #4a5568;
+            font-weight: bold;
+        }
+
+        .page-footer {
+            border-top: 1px solid #e2e8f0;
+            padding-top: 8px;
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 9pt;
+            color: #718096;
+        }
+
+        /* Cover Page Styling */
+        .cover-page {
+            text-align: center;
+            padding: 40px 20px;
+            border: 3px double #1a365d;
+            margin-bottom: 40px;
+            background-color: #f8fafc;
+            page-break-after: always;
+        }
+
+        .cover-badge {
+            font-size: 48pt;
+            margin-bottom: 10px;
+        }
+
+        .cover-title {
+            font-size: 26pt;
+            color: #1a365d;
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .cover-subtitle {
+            font-size: 16pt;
+            color: #2b6cb0;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .cover-divider {
+            width: 120px;
+            height: 4px;
+            background-color: #d69e2e;
+            margin: 20px auto;
+        }
+
+        .cover-meta {
+            margin-top: 50px;
+            text-align: right;
+            display: inline-block;
+            background: #ffffff;
+            padding: 20px 30px;
+            border-radius: 6px;
+            border: 1px solid #cbd5e0;
+            font-size: 11pt;
+        }
+
+        .cover-meta p {
+            margin: 6px 0;
+            color: #2d3748;
+        }
+
+        /* Table of Contents */
+        .toc-container {
+            background-color: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 18px 24px;
+            margin-bottom: 30px;
+        }
+
+        .toc-title {
+            font-size: 14pt;
+            font-weight: bold;
+            color: #1a365d;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #cbd5e0;
+            padding-bottom: 6px;
+        }
+
+        .toc-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            columns: 2;
+            column-gap: 20px;
+        }
+
+        .toc-list li {
+            margin-bottom: 8px;
+            font-size: 10pt;
+        }
+
+        .toc-list a {
+            color: #2b6cb0;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        /* Headings */
+        h1 {
+            font-size: 16pt;
+            color: #1a365d;
+            border-bottom: 2px solid #2b6cb0;
+            padding-bottom: 4px;
+            margin-top: 28px;
+            margin-bottom: 14px;
+            page-break-after: avoid;
+        }
+
+        h2 {
+            font-size: 12pt;
+            color: #2c5282;
+            margin-top: 16px;
+            margin-bottom: 8px;
+            page-break-after: avoid;
+        }
+
+        p, ul, ol {
+            font-size: 10.5pt;
+            margin-bottom: 10px;
+            color: #2d3748;
+        }
+
+        ul, ol {
+            padding-right: 22px;
+        }
+
+        li {
+            margin-bottom: 4px;
+        }
+
+        /* Callout Boxes */
+        .box-warning {
+            background-color: #fffbea;
+            border-right: 4px solid #d69e2e;
+            border-top: 1px solid #f6e05e;
+            border-left: 1px solid #f6e05e;
+            border-bottom: 1px solid #f6e05e;
+            padding: 12px 16px;
+            margin: 14px 0;
+            border-radius: 4px;
+            font-size: 10pt;
+        }
+
+        .box-warning-title {
+            font-weight: bold;
+            color: #975a16;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .box-info {
+            background-color: #ebf8ff;
+            border-right: 4px solid #3182ce;
+            border-top: 1px solid #90cdf4;
+            border-left: 1px solid #90cdf4;
+            border-bottom: 1px solid #90cdf4;
+            padding: 12px 16px;
+            margin: 14px 0;
+            border-radius: 4px;
+            font-size: 10pt;
+        }
+
+        .box-info-title {
+            font-weight: bold;
+            color: #2b6cb0;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Code / RP Action highlight */
+        .rp-cmd {
+            background-color: #edf2f7;
+            border: 1px solid #cbd5e0;
+            padding: 2px 6px;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            color: #2d3748;
+            border-radius: 3px;
+            direction: ltr;
+            display: inline-block;
+        }
+
+        .page-break {
+            page-break-after: always;
+        }
+    </style>
+</head>
+<body>
+
+<div class="document-container">
+
+    <!-- COVER PAGE -->
+    <div class="cover-page">
+        <div class="cover-badge">🛡️🐕‍🦺</div>
+        <div class="cover-title">משטרת לוס סנטוס</div>
+        <div class="cover-subtitle">מערך ה-K9 הרשמי</div>
+        <div class="cover-divider"></div>
+        <h1 style="border: none; font-size: 20pt; margin-top: 20px; color: #1a365d;">ספר החוקים והנהלים הרשמי</h1>
+        <p style="font-size: 12pt; color: #4a5568;">מדריך מבצעי, חוקי ומשמעתי למפעילים ומפקדים</p>
+
+        <div class="cover-meta">
+            <p><strong>גרסת מסמך:</strong> 1.0</p>
+            <p><strong>תאריך עדכון:</strong> 9.9.2026</p>
+            <p><strong>מנהל המערך:</strong> Jayden Brooks</p>
+            <p><strong>ארגון:</strong> PRRP POLICE K9</p>
+        </div>
+    </div>
+
+    <!-- HEADER & FOOTER DISPLAY FOR BODY -->
+    <div class="page-header">
+        <span>משטרת לוס סנטוס | מערך K9</span>
+        <span>ספר הנהלים הרשמי</span>
+    </div>
+
+    <!-- TABLE OF CONTENTS -->
+    <div class="toc-container">
+        <div class="toc-title">תוכן עניינים מקוצר</div>
+        <ul class="toc-list">
+            <li><a href="#ch1">פרק 1 — מבוא, מטרות וכללי יסוד</a></li>
+            <li><a href="#ch2">פרק 2 — אחריות ה-Handler, מדדים וכשירות</a></li>
+            <li><a href="#ch3">פרק 3 — חיפושים ודרישת חשד סביר</a></li>
+            <li><a href="#ch4">פרק 4 — נוהל Tackle וזמני המתנה</a></li>
+            <li><a href="#ch5">פרק 5 — נוהל Attack ופתיחה באש</a></li>
+            <li><a href="#ch6">פרק 6 — כניסה למבנים, מרדפים ובטיחות הכלב</a></li>
+            <li><a href="#ch7">פרק 7 — נוהל מחסום פה (Muzzle) ופעולות RP</a></li>
+            <li><a href="#ch8">פרק 8 — איסורים מיוחדים (Special Restrictions)</a></li>
+            <li><a href="#ch9">פרק 9 — הפרות, משמעת, שלילת הסמכה ו-Blacklist</a></li>
+        </ul>
+    </div>
+
+    <!-- CHAPTER 1 -->
+    <div id="ch1">
+        <h1>פרק 1 — מבוא, מטרות וכללי יסוד</h1>
+        
+        <h2>1.1 מטרת ספר הנהלים והוראות תחולה</h2>
+        <p>ספר נהלים זה נועד להסדיר ולהגדיר את מסגרת ההפעלה, הפיקוח וההתנהלות של כלבי השירות (K9) במשטרת לוס סנטוס. הוראות מסמך זה תקפות ומחייבות לגבי מועמדים להסמכה, שוטרים בהכשרה, מפעילים מוסמכים (K9 Handlers) והסגל המפקד.</p>
+
+        <h2>1.2 תפקיד ה-K9 ככלי משטרתי מסייע</h2>
+        <p>כלב ה-K9 מהווה אמצעי משטרתי מסייע בלבד ולא כלי תקיפה אוטומטי. הכלב נועד לאתר ממצאים, לגילוי חומרים אסורים, לסיוע בלכידת חשודים נמלטים ולהגברת בטיחות הכוחות בשטח.</p>
+        
+        <div class="box-info">
+            <div class="box-info-title">📌 הבהרה מבצעית</div>
+            ה-K9 אינו מחליף את שיקול הדעת המבצעי של השוטר, אינו מהווה תחליף לנהלי המעצר הרגילים ואינו פוטר את השוטר מציות לחוק ולנהלי המשטר המשמעתיים.
+        </div>
+
+        <h2>1.3 עקרון ה-RP וההיגיון המבצעי</h2>
+        <p>הפעלת ה-K9 חייבת להתבצע תוך שמירה על רמת Roleplay (RP) גבוהה, אמינות והיגיון מבצעי מציאותי. חל איסור מוחלט לנצל מכניקות משחק או יכולות מערכתיות של ה-K9 כדי להשיג יתרון טקטי בלתי הוגן.</p>
+    </div>
+
+    <!-- CHAPTER 2 -->
+    <div id="ch2">
+        <h1>פרק 2 — אחריות ה-Handler, מדדים וכשירות</h1>
+
+        <h2>2.1 אחריות ישירה ושליטה</h2>
+        <p>ה-K9 Handler נושא באחריות מלאה, ישירה ובלעדית על מעשיו, תנועותיו והתנהגותו של ה-K9 הצמוד אליו בכל עת. כל פעולה של הכלב נחשבת כאילו בוצעה בהוראתו הישירה של המפעיל. החובות כוללות:</p>
+        <ul>
+            <li>שמירה על שליטה רציפה בכלב במהלך משמרת ובשגרה.</li>
+            <li>וידוא שהכלב אינו פועל באופן עצמאי ללא פקודה מפורשת.</li>
+            <li>אחריות מלאה על בטיחות הכלב ורווחתו בזמן הפעילות ולאחריה.</li>
+        </ul>
+
+        <h2>2.2 אחריות על מדדי ה-K9 (Stats)</h2>
+        <p>ה-Handler אחראי באופן אישי למעקב, תחזוקה ודאגה שוטפת למדדיו הפיזיים והמבצעיים של ה-K9 בכל עת:</p>
+        <ul>
+            <li><strong>Health</strong> (בריאות פיזית)</li>
+            <li><strong>Hunger</strong> (רמת רעב)</li>
+            <li><strong>Thirst</strong> (רמת צמא)</li>
+            <li><strong>Stamina</strong> (סיבולת)</li>
+            <li><strong>Smell</strong> (חוש ריח)</li>
+            <li><strong>Attack</strong> (עוצמת תקיפה)</li>
+            <li><strong>Defense</strong> (רמת הגנה)</li>
+        </ul>
+
+        <div class="box-warning">
+            <div class="box-warning-title">⚠️ אזהרת כשירות</div>
+            חל איסור לעלות למשמרת או לצאת לפעילות מבצעית כאשר הכלב סובל מליקוי במדדים, לרבות רעב, צמא, עייפות קשה או פציעה לא מטופלת.
+        </div>
+
+        <h2>2.3 אימונים וכשירות מבצעית</h2>
+        <p>כדי לשמור על כשירות מבצעית ותיאום מלא בין ה-Handler ל-K9, חלות חובות האימון הבאות:</p>
+        <ol>
+            <li><strong>אימון אישי שבועי:</strong> ה-Handler מחויב לבצע לפחות <strong>30 דקות אימון אישי</strong> עם ה-K9 שלו בכל שבוע.</li>
+            <li><strong>אימוני רענון מערכתיים:</strong> בנוסף לאימון השבועי, מתקיימים אימוני רענון של מערך ה-K9 אחת לשבועיים עד שלושה. השתתפות באימונים אלו הינה חובה.</li>
+        </ol>
+
+        <div class="box-info">
+            <div class="box-info-title">📌 הבהרה</div>
+            יש להבדיל בין חובת האימון השבועי האישי (באחריות ה-Handler) לבין אימוני הרענון התקופתיים (באחריות סגל המערך).
+        </div>
+    </div>
+
+    <!-- CHAPTER 3 -->
+    <div id="ch3">
+        <h1>פרק 3 — חיפושים ודרישת חשד סביר</h1>
+
+        <h2>3.1 סוגי החיפוש המורשים</h2>
+        <p>ה-K9 מוסמך לבצע שלושה סוגי חיפוש עיקריים בלבד:</p>
+        <ul>
+            <li><strong>Search Person:</strong> חיפוש על גופו או בחפציו של חשוד.</li>
+            <li><strong>Search Car:</strong> חיפוש בתוך רכב או בסביבתו הקרובה.</li>
+            <li><strong>Search Area:</strong> חיפוש במרחב פתוח או סגור לאיתור חפצים או אמצעים אסורים.</li>
+        </ul>
+
+        <h2>3.2 דרישת חשד סביר (Reasonable Suspicion)</h2>
+        <p>חובה מוחלטת: אסור להשתמש ב-K9 לצורך ביצוע Search Person, Search Car או Search Area ללא קיומו של <strong>Reasonable Suspicion (חשד סביר)</strong> מבוסס.</p>
+
+        <div class="box-warning">
+            <div class="box-warning-title">⚠️ אזהרה חמורה — חיפוש בלתי חוקי</div>
+            חיפוש באמצעות K9 המתבצע ללא חשד סביר נחשב לחיפוש בלתי חוקי ומהווה הפרה חמורה של נהלי מערך K9.
+        </div>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- CHAPTER 4 -->
+    <div id="ch4">
+        <h1>פרק 4 — נוהל Tackle וזמני המתנה</h1>
+
+        <h2>4.1 תנאי הפעלת Tackle</h2>
+        <p>פעולת Tackle נועדה להפלת חשוד ועיכוב התקדמותו במהלך מנוסה, ללא כוונת תקיפה קטלנית. מותר להשתמש ב-Tackle אך ורק כאשר קיימת הצדקה מבצעית, כגון מרדף רגלי לאחר חשוד שמתנגד, אינו נשמע להוראות ומנסה להימלט ממעצר חוקי.</p>
+
+        <h2>4.2 חובת Cooldown ב-Tackle</h2>
+        <p>כדי למנוע ניצול לרעה של מכניקת המשחק ולשמור על הגיון מבצעי ו-RP אמין:</p>
+
+        <div class="box-warning">
+            <div class="box-warning-title">⚠️ אזהרת המתנה חובה (Cooldown)</div>
+            קיימת המתנת חובה של <strong>לפחות 2 דקות</strong> בין ביצוע Tackle אחד לביצוע ה-Tackle הבא. חל איסור מוחלט לבצע Tackle ברציפות או בהפרש זמן הקצר מ-2 דקות.
+        </div>
+    </div>
+
+    <!-- CHAPTER 5 -->
+    <div id="ch5">
+        <h1>פרק 5 — נוהל Attack ופתיחה באש</h1>
+
+        <h2>5.1 מהות פעולת Attack</h2>
+        <p>הפעלת Attack מהווה שימוש בכוח פוגעני ומתמשך. Attack אינו כלי לעצירת כל חשוד, והשימוש בו מחייב הצדקה מבצעית וחוקית כבדת משקל.</p>
+
+        <h2>5.2 נוהל פתיחה באש — אמצעי, כוונה ויכולת</h2>
+        <p>הפעלת פקודת Attack נסמכת באופן ישיר על נוהל פתיחה באש, הדורש התקיימות מצטברת של שלושת התנאים הבאים:</p>
+        <ul>
+            <li><strong>אמצעי:</strong> החשוד מחזיק בכלי נשק חם או קר.</li>
+            <li><strong>כוונה:</strong> לקיומה של כוונה מיידית לפגוע בשוטר, בשוטרים נוספים או באזרחים.</li>
+            <li><strong>יכולת:</strong> לחשוד יש את היכולת הפיזית לממש את הפגיעה באופן מיידי (לדוגמה: החשוד מכוון נשק חם לעבר שוטרים או יורה עליהם).</li>
+        </ul>
+
+        <div class="box-warning">
+            <div class="box-warning-title">⚠️ איסור תקיפה</div>
+            אין להשתמש ב-Attack נגד אדם שנכנע, אדם שנמצא בשליטת השוטרים, או אדם שאינו מהווה סכנה המצדיקה שימוש ברמת כוח זו.
+        </div>
+
+        <h2>5.3 דגש למצבי מרדף רכב וגלגלים</h2>
+        <p>במידה ואתם בעצירה שגרתית ואין לידכם ניידת / אופנוע / מסוק, והרכב שנעצר פותח במרדף, יש אפשרות להשתמש בכלב לביצוע Tackle. אם לאחר מכן החשוד פורק מהרכב ומבצע מרדף רגלי, השימוש ב-K9 יתבצע בהתאם לנהלי Tackle.</p>
+    </div>
+
+    <!-- CHAPTER 6 -->
+    <div id="ch6">
+        <h1>פרק 6 — כניסה למבנים, מרדפים ובטיחות הכלב</h1>
+
+        <h2>6.1 סריקת מבנים והערכת מצב</h2>
+        <p>לפני כניסה למבנה או לאזור בסיכון, נדרש ה-Handler לבצע הערכת מצב של הסיכונים והאיומים בשטח. חל איסור לשלוח K9 ראשון אל תוך מבנה או חדר שאינו סרוק באופן אוטומטי כאשר קיים חשש לחשוד חמוש.</p>
+
+        <h2>6.2 התנהלות במרדפים</h2>
+        <ul>
+            <li>אין להשתמש ב-K9 באופן אוטומטי בכל מרדף.</li>
+            <li>במרדף רגלי, ה-K9 משמש לצמצום פערים ועצירת החשוד באמצעות Tackle (בכפוף לזמן ה-Cooldown).</li>
+            <li>ברגע שהחשוד עוצר, נכנע או מביע כוונה ברורה להיכנע — חובה לקרוא ל-K9 מיד בחזרה ולחדול מכל פעולה.</li>
+        </ul>
+
+        <h2>6.3 הגנת הכלב ואיסור ניצול לרעה</h2>
+        <div class="box-warning">
+            <div class="box-warning-title">⚠️ איסור סיכון מיותר</div>
+            חל איסור מוחלט להשתמש ב-K9 כ"פיתיון", כבדיקת שטח לספיגת ירי, או כ"מגן אנושי". ה-K9 הינו משאב יקר ערך שיש לשמור על חייו ובטיחותו.
+        </div>
+    </div>
+
+    <!-- CHAPTER 7 -->
+    <div id="ch7">
+        <h1>פרק 7 — נוהל מחסום פה (Muzzle) ופעולות RP</h1>
+
+        <h2>7.1 חובת מחסום פה בשגרה</h2>
+        <p>ה-K9 חייב להיות מצויד במחסום פה בכל עת במהלך סיורים, שהייה בתחנה, נסיעה בניידת ושגרה מבצעית.</p>
+
+        <h2>7.2 הסרה והחזרה באירוע מבצעי</h2>
+        <p>כאשר אירוע מבצעי מחייב זאת (כגון מרדף רגלי המצריך Tackle), מותר להסיר את המחסום תוך ביצוע פעולת RP מתאימה:</p>
+        <p><span class="rp-cmd">/me מוריד את מחסום הפה מה-K9</span></p>
+
+        <div class="box-info">
+            <div class="box-info-title">📌 חובת החזרת מחסום הפה</div>
+            בסיום האירוע המבצעי, חובה מוחלטת להחזיר את המחסום באמצעות פעולת RP:
+            <br>
+            <span class="rp-cmd">/me מחזיר את מחסום הפה ל-K9</span>
+        </div>
+    </div>
+
+    <!-- CHAPTER 8 -->
+    <div id="ch8">
+        <h1>פרק 8 — איסורים מיוחדים (Special Restrictions)</h1>
+        
+        <h2>8.1 איסורים מחייבים במערך</h2>
+        <ol>
+            <li><strong>No Petting:</strong> חל איסור מוחלט לאפשר לאזרחים או לשוטרים שאינם ה-Handler הרשמי ללטף את ה-K9 בזמן תפקיד ומשמרת.</li>
+            <li><strong>Abandoning K9:</strong> איסור מוחלט על נטישת ה-K9 או השארתו ללא השגחה בצורה שאינה מוצדקת מבצעית.</li>
+            <li><strong>חיפוש ללא חשד סביר:</strong> איסור על ביצוע Search מכל סוג ללא Reasonable Suspicion.</li>
+            <li><strong>שימוש לא מוצדק ב-Tackle / Attack:</strong> איסור הפעלה ללא הצדקה חוקית ומבצעית, או תוך הפרת Cooldown.</li>
+            <li><strong>שימוש כפיתיון / מגן אנושי:</strong> איסור לסכן את הכלב ללא צורך מבצעי חוקי.</li>
+        </ol>
+    </div>
+
+    <!-- CHAPTER 9 -->
+    <div id="ch9">
+        <h1>פרק 9 — הפרות, משמעת, שלילת הסמכה ו-Blacklist</h1>
+
+        <h2>9.1 משמעות הפרת הנהלים</h2>
+        <p>הפרת נהלי מערך ה-K9 נחשבת להפרת משמעת ופקודות חמורה. המערך רואה בחומרה רבה כל חריגה מהוראות ספר זה.</p>
+
+        <h2>9.2 סנקציות וסמכות ענישה</h2>
+        <p>במקרה של הפרת חוקי המערך, יופעלו הסנקציות הבאות:</p>
+        <ol>
+            <li><strong>שלילת הסמכת ה-K9</strong> של ה-Handler באופן מיידי.</li>
+            <li><strong>כניסה ל-Blacklist של מערך K9 למשך חודשיים (2 חודשים)</strong>.</li>
+        </ol>
+
+        <div class="box-warning">
+            <div class="box-warning-title">⚠️ סמכות ענישה בלעדית</div>
+            החלטת הענישה והסנקציות נמצאת בסמכותו הבלעדית של <strong>K9 Manager</strong>, אשר יעביר את הטיפול וההחלטה למפקדים הרלוונטיים בהתאם לצורך.
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="page-footer">
+        <span>ספר החוקים והנהלים הרשמי — מערך K9 | גרסה [גרסת מסמך]</span>
+        <span>משטרת לוס סנטוס</span>
+    </div>
+
+</div>
+
+</body>
+</html>
